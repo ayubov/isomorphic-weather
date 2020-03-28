@@ -1,0 +1,55 @@
+html,
+body {
+  height: 100%;
+  font-family: monospace;
+}
+
+
+body {
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  color: $text;
+  background-color: $body;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  min-height: 100%;
+  position: relative;
+}
+
+nav {
+  padding: 16px;
+  background: $header;
+}
+
+.main {
+  padding: 0 16px 16px 16px;
+  flex-grow: 1;
+}
+
+footer {
+  background: $footer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+}
+
+.active {
+  color: $text;
+  cursor: default;
+  text-decoration: none;
+}
+
+a {
+  color: $link;
+  margin-right: 16px;
+} 
