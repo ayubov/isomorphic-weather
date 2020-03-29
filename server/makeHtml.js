@@ -25,6 +25,8 @@ const prefetchStyleLinks = bundles => {
     .join('');
 };
 
+const jss = styles => `<style id="jss-server-side">${styles}</style>`;
+
 const cssLinks = bundles => {
   const mainCSS = assetManifest['main.css'];
   const bundleFilePaths = bundles
@@ -61,7 +63,7 @@ const jsScripts = bundles => {
     .join('');
 };
 
-export const makeHtml = ({ helmet, serverData, markup, bundles }) => {
+export const makeHtml = ({ helmet, serverData, markup, bundles, jssStyles }) => {
   const htmlAttrs = helmet.htmlAttributes.toString();
   const bodyAttrs = helmet.bodyAttributes.toString();
 
@@ -76,8 +78,9 @@ export const makeHtml = ({ helmet, serverData, markup, bundles }) => {
         ${prefetchStyleLinks(bundles)}
         ${helmet.link.toString()}
         ${cssLinks(bundles)}
+        ${jss(jssStyles)}
         ${helmet.style.toString()}
-
+        
         ${helmet.noscript.toString()}
         ${helmet.script.toString()}
         ${jsScripts(bundles)}

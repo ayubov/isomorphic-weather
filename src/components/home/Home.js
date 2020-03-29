@@ -1,9 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, forwardRef } from 'react';
 import Select from 'react-select';
 import MaterialTable from 'material-table'
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 import { useServerData } from '../../context/serverData';
 import styles from './home.module.scss';
+
+const TABLE_ICONS = {
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+};
 
 const TABLE_COLUMNS = [
   { title: 'Date', field: 'datetime', type: 'date' },
@@ -47,6 +52,7 @@ const Home = () => {
             columns={TABLE_COLUMNS}
             data={dataToShow}
             options={TABLE_OPTIONS}
+            icons={TABLE_ICONS}
           />
         </div>
       )}

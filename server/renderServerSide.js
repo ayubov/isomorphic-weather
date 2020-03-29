@@ -8,6 +8,7 @@ import { getBundles } from 'react-loadable/webpack';
 import App from '../src/components/App';
 import { fetchInitData } from './fetchInitData';
 import { makeHtml } from './makeHtml';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 import stats from '../build/react-loadable.json';
 import { ServerDataProvider } from '../src/context/serverData';
 
@@ -30,12 +31,15 @@ export const renderServerSide = (req, res) => {
 function renderApp(ServerApp, data, req, res) {
   const context = {};
   const modules = [];
+  const sheets = new ServerStyleSheets(); // https://material-ui.com/guides/server-rendering/
 
-  const markup = ReactDOMServer.renderToString(
+  const markup = ReactDOMServer.renderToString(sheets.collect(
     <Loadable.Capture report={moduleName => modules.push(moduleName)}>
       <ServerApp data={data} location={req.url} context={context} />
-    </Loadable.Capture>
+    </Loadable.Capture>)
   );
+
+  const jssStyles = sheets.toString();
 
   if (context.url) {
     res.redirect(context.url);
@@ -44,7 +48,8 @@ function renderApp(ServerApp, data, req, res) {
       helmet: Helmet.renderStatic(),
       serverData: data,
       bundles: getBundles(stats, modules),
-      markup
+      markup,
+      jssStyles
     });
 
     res.status(200).send(fullMarkup);
